@@ -1,0 +1,13 @@
+function [H_hat] = Channel_Estimation(Y_BS, Y_UE, X_BS, X_UE, mode)
+
+    if mode == "LS"
+        % BS side estimation protocol
+        H_BS_hat = LS_Estimation(Y_BS,X_BS);
+
+
+        % UE side estimation protocol
+        H_UE_hat = LS_Estimation(Y_UE,X_UE);
+
+    end
+    
+end

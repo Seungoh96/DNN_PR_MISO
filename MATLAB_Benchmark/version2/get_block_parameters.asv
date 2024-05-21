@@ -1,0 +1,25 @@
+function [H_block, Pol_BS_r_blk_pilot_block, Pol_UE_t_blk_pilot_block, Pol_UE_r_blk_pilot_block, BS_tW_block ] = ...
+    get_block_parameters(H, W_pilot, Pol_BS_t_blk_pilot, Pol_BS_r_blk_pilot, ...
+                            Pol_UE_t_blk_pilot, Pol_UE_r_blk_pilot)
+    % UE Side 
+    % Initialize 
+    L = size(Pol_BS_t_blk_pilot,3);
+    TxW_block_tmp = zeros(2*L,1);
+    % Get reshaped Pol_Rx_block
+    Pol_UE_r_blk_pilot_block = reshape(Pol_UE_r_blk_pilot, [1,2*L]);
+    % Get TxW_block
+    for i = 1:L
+        TxW_block_tmp(:,:,i) = Pol_BS_t_blk_pilot(:,:,i)*W_pilot(:,:,i);
+    end
+    BS_tW_block = make_blk_diag_matrix(TxW_block_tmp);
+
+    % BS Side 
+    nt = size(Pol_BS_t_blk_pilot,2);
+    % Get reshaped Pol_BS_t_block
+    Pol_BS_r_blk_pilot_block = reshape((permute(Pol_BS_r_blk_pilot, [2 1 3])), [nt,2*L*nt]);
+    % Get reshaped Pol_UE_r_block
+
+
+    % Get H_block 
+    H_block = make_blk_diag_matrix(repmat(H,[1,1,L]));
+end
